@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "618403806843",
+    "project_id": "yellowclassmovie",
+    "storage_bucket": "yellowclassmovie.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618403806843:android:2be2b6010418dc0c0f2cde",
+        "android_client_info": {
+          "package_name": "com.ankuranant.yellowclass_movie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618403806843-rks060c0nu5gchokcovgu2obhj4itfc6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4YJPsY5cjanhMnblpcTLLEBeHUmAsNvk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618403806843-rks060c0nu5gchokcovgu2obhj4itfc6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
