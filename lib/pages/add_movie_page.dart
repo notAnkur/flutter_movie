@@ -110,7 +110,7 @@ class _AddMoviePageState extends State<AddMoviePage> {
                       child: TextFormField(
                         style: TextStyle(fontSize: 18.0),
                         decoration: InputDecoration(
-                            labelText: 'Title',
+                            labelText: 'Movie Name',
                             labelStyle: TextStyle(fontSize: 18.0),
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10.0))),

@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yellowclass_movie/helpers/database_helper.dart';
 import 'package:yellowclass_movie/helpers/image_helper.dart';
 import 'package:yellowclass_movie/models/movie_model.dart';
 import 'package:yellowclass_movie/pages/add_movie_page.dart';
+import 'package:yellowclass_movie/provider/google_sign_in.dart';
 
 class MovieListPage extends StatefulWidget {
   const MovieListPage({Key? key}) : super(key: key);
@@ -87,6 +90,7 @@ class _MovieListPageState extends State<MovieListPage> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
@@ -98,53 +102,67 @@ class _MovieListPageState extends State<MovieListPage> {
                       updateMovieList: _updateMovieList,
                     ))),
       ),
-      body: FutureBuilder(
-        future: _movieList,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return Scrollbar(
-            thickness: 10,
-            radius: Radius.circular(10.0),
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(vertical: 80.0),
-              itemCount: snapshot.data.length + 1,
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('My Movies',
+      body: Scaffold(
+        appBar: AppBar(
+          title: Text('YC Movie App'),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  provider.logout();
+                },
+                icon: Icon(Icons.logout_rounded)),
+          ],
+        ),
+        body: FutureBuilder(
+          future: _movieList,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Scrollbar(
+              thickness: 10,
+              radius: Radius.circular(10.0),
+              child: ListView.builder(
+                padding: EdgeInsets.symmetric(vertical: 80.0),
+                itemCount: snapshot.data.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 40.0, vertical: 20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('My Movies (${snapshot.data.length})',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold)),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Welcome ${user!.displayName}!',
                             style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          '${snapshot.data.length} movies',
-                          style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
-                    ),
-                  );
-                }
+                                color: Colors.grey,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
 
-                return _buildMovie(snapshot.data[index - 1]);
-              },
-            ),
-          );
-        },
+                  return _buildMovie(snapshot.data[index - 1]);
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }
